@@ -49,7 +49,10 @@ public class TrackingServes {
     private Map<Integer, Map<String, Integer>> findTrackInPullRequest(List<Issue> issuesList, Integer issueNumber, String repoName) {
        Map<Integer, Map<String, Integer>> result = new HashMap<>();
        issuesList.forEach(issue -> {
-                                     String[] words = issue.getTitle().replaceFirst("[-_]", " ").split(" ");
+                                     String[] words = issue.getTitle().replaceFirst("[-:_]", " ").split(" ");
+                                     if(words[0].charAt(0) == "#".charAt(0)){
+                                         words[0] = words[0].replaceFirst("[#]", "");
+                                     }
                                      if (onlyDigit.matcher(words[0]).matches() && words[0].equals(issueNumber.toString())){
                                          Map<Integer, Map<String, Integer>> bodyTrack = getTrackFromIssue(issue);
                                          result.put(issue.getNumber(), bodyTrack.get(issue.getNumber()));
