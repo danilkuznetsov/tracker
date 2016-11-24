@@ -117,7 +117,7 @@ public class TrackingServes {
                     .split(" ");
 
             for(String s :  st) {
-                if(pattern.matcher(s).matches()){
+                if(pattern.matcher(s.trim()).matches()){
                     int time = parseTime(s);
                     if (time > 0) {
                         if(result.get(c.getUser().getLogin()) == null){
