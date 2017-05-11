@@ -114,10 +114,11 @@ public class TrackingServes {
             String[] st = c.getBody()
                     .substring(startIndex+10, c.getBody().length() >= startIndex + 24 ? startIndex + 24 : c.getBody().length())
                     .toLowerCase()
+                    .replaceAll("\n", " ")
                     .split(" ");
 
             for(String s :  st) {
-                if(pattern.matcher(s).matches()){
+                if(pattern.matcher(s.trim()).matches()){
                     int time = parseTime(s);
                     if (time > 0) {
                         if(result.get(c.getUser().getLogin()) == null){
@@ -125,11 +126,8 @@ public class TrackingServes {
                         } else {
                             result.put(c.getUser().getLogin(), result.get(c.getUser().getLogin()) + time);
                         }
-
                     }
-                }else {
                 }
-
             }
         }
         return result;
@@ -141,14 +139,17 @@ public class TrackingServes {
     }
 
     private Map<Integer, Map<String, Integer>> getTrackFromIssue(Issue issue) {
-        int startIndex = issue.getBody().indexOf(BIZON4IK);
         Map<Integer, Map<String, Integer>>  result = new HashMap<>();
-        if (startIndex != -1){
-            Map<String, Integer> time = parseBody(issue, startIndex);
-            if(time.size()>0){
-                result.put(issue.getNumber(), time);
+        if (issue.getBody() != null){
+            int startIndex = issue.getBody().indexOf(BIZON4IK);
+            if (startIndex != -1){
+                Map<String, Integer> time = parseBody(issue, startIndex);
+                if(time.size()>0){
+                    result.put(issue.getNumber(), time);
+                }
             }
         }
+
         return result;
     }
 
