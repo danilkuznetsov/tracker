@@ -54,9 +54,10 @@ public class TrackingServes {
         }
 
         return issueService.getIssues(getProvider(repoName), params)
-                .stream()
-                .map(Issue::getNumber)
-                .collect(Collectors.toList());
+            .stream()
+            .filter(issue -> issue.getPullRequest().getUrl() == null)
+            .map(Issue::getNumber)
+            .collect(Collectors.toList());
     }
 
 
